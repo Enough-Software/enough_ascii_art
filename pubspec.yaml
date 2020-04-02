@@ -1,6 +1,6 @@
 name: enough_ascii_art
-description: Generates ASCII art using image to ASCII conversion, FIGlet support and smiley to text translations.
-version: 0.8.0
+description: Generates ASCII art using image to ASCII, FIGlet text banner support and emoticon to text conversions.
+version: 0.9.0
 homepage: https://github.com/Enough-Software/enough_ascii_art
 
 environment:
@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   image: ^2.1.12
+  resource: ^2.1.6
 #  path: ^1.6.0
 
 dev_dependencies:

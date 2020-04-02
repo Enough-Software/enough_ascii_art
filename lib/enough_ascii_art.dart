@@ -4,6 +4,8 @@
 /// Call [convertSmileys] to convert popular UTF-8 smileys into their text representation
 library enough_ascii_art;
 
+import 'package:enough_ascii_art/src/figlet/figlet.dart';
+import 'package:enough_ascii_art/src/figlet/font.dart';
 import 'package:image/image.dart';
 
 import 'src/image_converter.dart';
@@ -11,6 +13,10 @@ import 'src/emoticon_converter.dart';
 
 export 'src/image_converter.dart';
 export 'src/emoticon_converter.dart';
+export 'src/figlet/figlet.dart';
+export 'src/figlet/font.dart';
+export 'src/figlet/parser.dart';
+export 'src/figlet/renderer.dart';
 
 const String _asciiGrayScaleCharacters = '#@%=+*:-. ';
 
@@ -43,4 +49,12 @@ String convertImage(Image image,
 String convertEmoticons(String text,
     [EmoticonStyle style = EmoticonStyle.western]) {
   return EmoticonConverter.convertEmoticons(text, style);
+}
+
+Future<String> renderFigletWithFontName(String text, String fontName) {
+  return FIGlet.renderFIGureForFontName(text, fontName);
+}
+
+String renderFiglet(String text, Font font) {
+  return FIGlet.renderFIGure(text, font);
 }

@@ -1,4 +1,4 @@
-Mozilla Public License Version 2.0
+Mozilla License Version 2.0
 ==================================
 
 1. Definitions
@@ -65,9 +65,9 @@ Mozilla Public License Version 2.0
     Contributor Version.
 
 1.12. "Secondary License"
-    means either the GNU General Public License, Version 2.0, the GNU
-    Lesser General Public License, Version 2.1, the GNU Affero General
-    Public License, Version 3.0, or any later versions of those
+    means either the GNU General License, Version 2.0, the GNU
+    Lesser General License, Version 2.1, the GNU Affero General
+    License, Version 3.0, or any later versions of those
     licenses.
 
 1.13. "Source Code Form"
@@ -370,4 +370,4 @@ Exhibit B - "Incompatible With Secondary Licenses" Notice
 ---------------------------------------------------------
 
   This Source Code Form is "Incompatible With Secondary Licenses", as
-  defined by the Mozilla Public License, v. 2.0.
+  defined by the Mozilla License, v. 2.0.
