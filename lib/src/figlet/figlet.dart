@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:isolate';
+import 'package:enough_ascii_art/src/package_file_loader.dart';
 import 'package:resource/resource.dart' show Resource;
 import 'package:enough_ascii_art/src/figlet/parser.dart';
 import 'package:enough_ascii_art/src/figlet/renderer.dart';
@@ -11,19 +13,16 @@ class FIGlet {
       String text, String fontName) async {
     fontName ??= 'cosmic';
     List<String> fontDefinition;
+    String path;
     try {
-      var resource = Resource('package:/lib/src/figlet/fonts/$fontName.flf');
-      var text = await resource.readAsString();
-      fontDefinition = text.split('\r\n');
-      if (fontDefinition.length == 1) {
-        fontDefinition = text.split('\n');
-      }
+      path = await PackageFileLoader.resolveLibraryPath(
+          'enough_ascii_art', './lib/src/figlet/fonts/$fontName.flf');
+      //print('Font path: $path');
+      fontDefinition = await File(path).readAsLines();
     } catch (e) {
-      //print(e);
-      fontDefinition =
-          await File('./lib/src/figlet/fonts/$fontName.flf').readAsLines();
+      print('Unable to load font from $path: $e');
+      return text;
     }
-
     var parser = Parser();
     var font = parser.parseFontDefinition(fontDefinition);
     return renderFIGure(text, font);
