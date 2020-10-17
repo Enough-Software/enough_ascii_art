@@ -6,7 +6,7 @@ import 'package:enough_ascii_art/src/figlet/renderer.dart';
 
 import 'font.dart';
 
-enum Direction {
+enum FigletRenderDirection {
   LeftToRight,
   TopToBottom
 }
@@ -14,7 +14,7 @@ enum Direction {
 /// Helper class to render a FIGure
 class FIGlet {
   static Future<String> renderFIGureForFontName(
-      String text, String fontName, Direction direction) async {
+      String text, String fontName, FigletRenderDirection direction) async {
     fontName ??= 'cosmic';
     List<String> fontDefinition;
     String path;
@@ -32,7 +32,7 @@ class FIGlet {
     return renderFIGure(text, font, direction);
   }
 
-  static String renderFIGure(String text, Font font, Direction direction) {
+  static String renderFIGure(String text, Font font, FigletRenderDirection direction) {
     var renderer = Renderer();
     return renderer.render(text, font, direction);
   }

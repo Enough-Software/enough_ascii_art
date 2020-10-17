@@ -52,10 +52,10 @@ String convertEmoticons(String text,
   return EmoticonConverter.convertEmoticons(text, style);
 }
 
-Future<String> renderFigletWithFontName(String text, String fontName, {Direction direction = Direction.LeftToRight}) {
+Future<String> renderFigletWithFontName(String text, String fontName, {FigletRenderDirection direction = FigletRenderDirection.LeftToRight}) {
   return FIGlet.renderFIGureForFontName(text, fontName, direction);
 }
 
-String renderFiglet(String text, Font font, {Direction direction = Direction.LeftToRight}) {
+String renderFiglet(String text, Font font, {FigletRenderDirection direction = FigletRenderDirection.LeftToRight}) {
   return FIGlet.renderFIGure(text, font, direction);
 }

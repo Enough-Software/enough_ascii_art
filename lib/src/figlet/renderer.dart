@@ -16,13 +16,13 @@ class Renderer {
   String render(
     String text,
     Font font,
-    Direction direction, {
+    FigletRenderDirection direction, {
     int maxLineWidth,
     List<HorizontalLayout> horizontalLayouts,
     List<VerticalLayout> verticalLayouts,
   }) {
     horizontalLayouts ??= font.horizontalLayouts;
-    if (direction == Direction.LeftToRight) {
+    if (direction == FigletRenderDirection.LeftToRight) {
       return _renderLR(text, font, horizontalLayouts);
     } else {
       return _renderTB(text, font);
