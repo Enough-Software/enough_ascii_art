@@ -1,44 +1,27 @@
 import 'dart:io';
-import 'package:enough_ascii_art/enough_ascii_art.dart';
+import 'package:enough_ascii_art/enough_ascii_art.dart' as art;
 import 'package:image/image.dart' as img;
 
 void main() async {
   var image = img.decodeImage(File('./example/enough.jpg').readAsBytesSync());
-  var asciiImage = convertImage(image, maxWidth: 40, invert: true);
+  var asciiImage = art.convertImage(image, maxWidth: 40, invert: true);
   print('');
   print(asciiImage);
+
   var helloWithUtf8Smileys = 'hello world 😛';
   var helloWithTextSmileys =
-      convertEmoticons(helloWithUtf8Smileys, EmoticonStyle.western);
+      art.convertEmoticons(helloWithUtf8Smileys, art.EmoticonStyle.western);
   print('');
   print(helloWithTextSmileys);
   print('');
+
   print('cosmic:');
-  var figure = await renderFigletWithFontName('ENOUGH', 'cosmic');
+  var fontText = await File('./example/cosmic.flf').readAsString();
+  var figure = art.renderFiglet('ENOUGH', art.Font.text(fontText));
   print(figure);
   print('');
-  print('shadow:');
-  figure = await renderFigletWithFontName('ENOUGH', 'shadow');
-  print(figure);
-  print('');
-  print('smslant:');
-  figure = await renderFigletWithFontName('ENOUGH', 'smslant');
-  print(figure);
-  print('');
-  print('eftifont:');
-  figure = await renderFigletWithFontName('ENOUGH', 'eftifont');
-  print(figure);
-  print('');
-  print('big:');
-  figure = await renderFigletWithFontName('ENOUGH', 'big');
-  print(figure);
-  print('');
-  print('isometric1:');
-  figure = await renderFigletWithFontName('ENOUGH', 'isometric1');
-  print(figure);
-  print('');
-  print('chunky:');
-  figure = await renderFigletWithFontName('ENOUGH', 'chunky');
-  print(figure);
-  print('');
+
+  var unicode = art.renderUnicode('hello world', art.UnicodeFont.doublestruck);
+  print('double struck:');
+  print(unicode);
 }

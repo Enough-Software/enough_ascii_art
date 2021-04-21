@@ -1,19 +1,19 @@
 /// Have fun with ASCII text-based art.
 ///
-/// Call [convertImage] to convert an image to text
-/// Call [convertSmileys] to convert popular UTF-8 smileys into their text representation
+/// Brought to you by 𝔼𝕟𝕠𝕦𝕘𝕙 𝕊𝕠𝕗𝕥𝕨𝕒𝕣𝕖
 library enough_ascii_art;
 
 import 'package:enough_ascii_art/src/figlet/figlet.dart';
 import 'package:enough_ascii_art/src/figlet/font.dart';
+import 'package:enough_ascii_art/src/unicode_font_converter.dart';
 import 'package:image/image.dart';
-
 import 'src/figlet/figlet.dart';
 import 'src/image_converter.dart';
 import 'src/emoticon_converter.dart';
 
 export 'src/image_converter.dart';
 export 'src/emoticon_converter.dart';
+export 'src/unicode_font_converter.dart';
 export 'src/figlet/figlet.dart';
 export 'src/figlet/font.dart';
 export 'src/figlet/parser.dart';
@@ -52,10 +52,15 @@ String convertEmoticons(String text,
   return EmoticonConverter.convertEmoticons(text, style);
 }
 
-Future<String> renderFigletWithFontName(String text, String fontName, {FigletRenderDirection direction = FigletRenderDirection.LeftToRight}) {
-  return FIGlet.renderFIGureForFontName(text, fontName, direction);
+/// Rendes the given [text] in the specified [font].
+///
+/// Optionally specify the [direction], which defaults to [FigletRenderDirection.LeftToRight]
+String renderFiglet(String text, Font font,
+    {FigletRenderDirection direction = FigletRenderDirection.LeftToRight}) {
+  return FIGlet.renderFIGure(text, font, direction: direction);
 }
 
-String renderFiglet(String text, Font font, {FigletRenderDirection direction = FigletRenderDirection.LeftToRight}) {
-  return FIGlet.renderFIGure(text, font, direction);
+/// Renders the given [text] in the specified [font].
+String renderUnicode(String text, UnicodeFont font) {
+  return UnicodeFontConverter.encode(text, font);
 }
