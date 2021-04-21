@@ -1,3 +1,8 @@
+## 1.0.0
+- `enough_ascii_art` is now [null safe](https://dart.dev/null-safety/tour) #127
+- removed integration of fonts, as this is not supported by Dart
+- Convert ASCII text into UTF-8 "fonts" like 𝕕𝕠𝕦𝕓𝕝𝕖 𝕤𝕥𝕣𝕦𝕔𝕜 with `renderUnicode(..)`.
+
 ## 0.9.7
 - Fixed file path addressing on Windows
 
