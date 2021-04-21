@@ -8,6 +8,7 @@ import 'package:enough_ascii_art/src/figlet/figlet.dart';
 import 'package:enough_ascii_art/src/figlet/font.dart';
 import 'package:image/image.dart';
 
+import 'src/figlet/figlet.dart';
 import 'src/image_converter.dart';
 import 'src/emoticon_converter.dart';
 
@@ -51,10 +52,10 @@ String convertEmoticons(String text,
   return EmoticonConverter.convertEmoticons(text, style);
 }
 
-Future<String> renderFigletWithFontName(String text, String fontName) {
-  return FIGlet.renderFIGureForFontName(text, fontName);
+Future<String> renderFigletWithFontName(String text, String fontName, {FigletRenderDirection direction = FigletRenderDirection.LeftToRight}) {
+  return FIGlet.renderFIGureForFontName(text, fontName, direction);
 }
 
-String renderFiglet(String text, Font font) {
-  return FIGlet.renderFIGure(text, font);
+String renderFiglet(String text, Font font, {FigletRenderDirection direction = FigletRenderDirection.LeftToRight}) {
+  return FIGlet.renderFIGure(text, font, direction);
 }

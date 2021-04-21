@@ -132,6 +132,7 @@ class Parser {
         if (spaceIndex != -1) {
           codeUnitLine = codeUnitLine.substring(0, spaceIndex);
         }
+        if (codeUnitLine.isEmpty) continue;
         runeCode = int.tryParse(codeUnitLine);
         if (runeCode == null) {
           throw FormatException(

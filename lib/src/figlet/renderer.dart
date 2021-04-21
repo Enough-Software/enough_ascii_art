@@ -1,3 +1,5 @@
+import 'figlet.dart';
+import 'figlet.dart';
 import 'font.dart';
 
 enum RenderOptions { none }
@@ -11,23 +13,61 @@ class Renderer {
   /// [maxLineWidth] the optional maximum width for a single line, currently ignored
   /// [horizontalLayouts] the optional rules for horizontal layouting
   /// [verticalLayouts] the options rules for vertical layouting, currently ignored
-  String render(String text, Font font,
-      {int maxLineWidth,
-      List<HorizontalLayout> horizontalLayouts,
-      List<VerticalLayout> verticalLayouts}) {
+  String render(
+    String text,
+    Font font,
+    FigletRenderDirection direction, {
+    int maxLineWidth,
+    List<HorizontalLayout> horizontalLayouts,
+    List<VerticalLayout> verticalLayouts,
+  }) {
     horizontalLayouts ??= font.horizontalLayouts;
+    if (direction == FigletRenderDirection.LeftToRight) {
+      return _renderLR(text, font, horizontalLayouts);
+    } else {
+      return _renderTB(text, font);
+    }
+  }
+
+  void _processRune(
+    _RenderLine renderLine,
+    int rune,
+    Font font,
+    List<HorizontalLayout> horizontalLayouts,
+  ) {
+    var character = font.getCharacter(rune);
+    if (character != null) {
+      renderLine.addCharacterToRight(character, horizontalLayouts);
+      //TODO observe line width and wrap text when reaching maximum width
+      //TODO observe text direction
+    }
+  }
+
+  String _renderLR(
+    String text,
+    Font font,
+    List<HorizontalLayout> horizontalLayouts,
+  ) {
     var renderLine = _RenderLine(font);
     var runes = text.runes;
     for (var rune in runes) {
-      var character = font.getCharacter(rune);
-      if (character != null) {
-        renderLine.addCharacterToRight(character, horizontalLayouts);
-        //TODO observe line width and wrap text when reaching maximum width
-        //TODO observe text direction
-      }
+      _processRune(renderLine, rune, font, horizontalLayouts);
     }
     var result = renderLine.render();
     return result;
+  }
+
+  String _renderTB(String text, Font font) {
+    var runes = text.runes;
+    var result = <String>[];
+
+    for (var rune in runes) {
+      var renderLine = _RenderLine(font);
+      _processRune(renderLine, rune, font, font.horizontalLayouts);
+      result.add(renderLine.render());
+    }
+
+    return result.join();
   }
 }
 

@@ -5,10 +5,15 @@ import 'package:enough_ascii_art/src/figlet/renderer.dart';
 
 import 'font.dart';
 
+enum FigletRenderDirection {
+  LeftToRight,
+  TopToBottom
+}
+
 /// Helper class to render a FIGure
 class FIGlet {
   static Future<String> renderFIGureForFontName(
-      String text, String fontName) async {
+      String text, String fontName, FigletRenderDirection direction) async {
     fontName ??= 'cosmic';
     List<String> fontDefinition;
     String path;
@@ -23,11 +28,11 @@ class FIGlet {
     }
     var parser = Parser();
     var font = parser.parseFontDefinition(fontDefinition);
-    return renderFIGure(text, font);
+    return renderFIGure(text, font, direction);
   }
 
-  static String renderFIGure(String text, Font font) {
+  static String renderFIGure(String text, Font font, FigletRenderDirection direction) {
     var renderer = Renderer();
-    return renderer.render(text, font);
+    return renderer.render(text, font, direction);
   }
 }
