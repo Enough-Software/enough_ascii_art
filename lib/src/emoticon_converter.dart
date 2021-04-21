@@ -63,7 +63,7 @@ class EmoticonConverter {
   /// [style] the optional emoticon style
   static String convertEmoticons(String text,
       [EmoticonStyle style = EmoticonStyle.western]) {
-    if (text == null || text.isEmpty) {
+    if (text.isEmpty) {
       return text;
     }
     switch (style) {
@@ -75,7 +75,7 @@ class EmoticonConverter {
 
   static String _convert(String text, Map<String, String> emoticons) {
     for (var key in emoticons.keys) {
-      text = text.replaceAll(key, emoticons[key]);
+      text = text.replaceAll(key, emoticons[key]!);
     }
     return text;
   }

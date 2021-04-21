@@ -20,7 +20,8 @@ import 'package:enough_ascii_art/enough_ascii_art.dart' as art;
 import 'package:image/image.dart' as img;
 
 void main() async {
-  var image = img.decodeImage(File('./example/enough.jpg').readAsBytesSync());
+  final bytes = await File('./example/enough.jpg').readAsBytes();
+  final image = img.decodeImage(bytes)!;
   var asciiImage = art.convertImage(image, maxWidth: 40, invert: true);
   print('');
   print(asciiImage);

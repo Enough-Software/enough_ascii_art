@@ -72,19 +72,19 @@ enum VerticalLayout {
 ///
 /// Since a FIGfont file is a text file, it can be created with any text editing program on any platform. The filename of a FIGfont file must end with ".flf", which stands for "FIGLettering Font".
 class Font {
-  int hardblank;
-  int height;
-  int baseLine;
-  int maxCharacterLength;
-  PrintDirection printDirection;
-  List<HorizontalLayout> horizontalLayouts;
+  int? hardblank;
+  late int height;
+  int? baseLine;
+  int? maxCharacterLength;
+  PrintDirection? printDirection;
+  List<HorizontalLayout>? horizontalLayouts;
   bool get isFullWidthLayout =>
       horizontalLayouts == null ||
-      (horizontalLayouts.length == 1 &&
-          horizontalLayouts.first == HorizontalLayout.fullWidth);
+      (horizontalLayouts!.length == 1 &&
+          horizontalLayouts!.first == HorizontalLayout.fullWidth);
 
-  Character _zeroCharacter;
-  final Map<int, Character> _charactersByRuneCode = <int, Character>{};
+  Character? _zeroCharacter;
+  final _charactersByRuneCode = <int, Character>{};
 
   void addCharacter(
       int runeCode, int characterWidth, List<String> characterLines) {
@@ -95,16 +95,15 @@ class Font {
     }
   }
 
-  Character getCharacter(int rune) {
+  Character? getCharacter(int rune) {
     var character = _charactersByRuneCode[rune];
-    character ??= _zeroCharacter;
-    return character;
+    return character ?? _zeroCharacter;
   }
 
   static Future<Font> network(String src) async {
     final response = await HttpHelper.httpGet(src);
     if (response.statusCode == 200) {
-      return text(response.text);
+      return text(response.text!);
     }
     throw StateError(
         'Unable to resolve url "$src": got response code ${response.statusCode}');

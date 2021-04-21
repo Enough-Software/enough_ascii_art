@@ -1,5 +1,4 @@
 import 'figlet.dart';
-import 'figlet.dart';
 import 'font.dart';
 
 enum RenderOptions { none }
@@ -17,13 +16,13 @@ class Renderer {
     String text,
     Font font,
     FigletRenderDirection direction, {
-    int maxLineWidth,
-    List<HorizontalLayout> horizontalLayouts,
-    List<VerticalLayout> verticalLayouts,
+    int? maxLineWidth,
+    List<HorizontalLayout>? horizontalLayouts,
+    List<VerticalLayout>? verticalLayouts,
   }) {
     horizontalLayouts ??= font.horizontalLayouts;
     if (direction == FigletRenderDirection.LeftToRight) {
-      return _renderLR(text, font, horizontalLayouts);
+      return _renderLR(text, font, horizontalLayouts!);
     } else {
       return _renderTB(text, font);
     }
@@ -33,9 +32,9 @@ class Renderer {
     _RenderLine renderLine,
     int rune,
     Font font,
-    List<HorizontalLayout> horizontalLayouts,
+    List<HorizontalLayout>? horizontalLayouts,
   ) {
-    var character = font.getCharacter(rune);
+    final character = font.getCharacter(rune);
     if (character != null) {
       renderLine.addCharacterToRight(character, horizontalLayouts);
       //TODO observe line width and wrap text when reaching maximum width
@@ -49,20 +48,20 @@ class Renderer {
     List<HorizontalLayout> horizontalLayouts,
   ) {
     var renderLine = _RenderLine(font);
-    var runes = text.runes;
+    final runes = text.runes;
     for (var rune in runes) {
       _processRune(renderLine, rune, font, horizontalLayouts);
     }
-    var result = renderLine.render();
+    final result = renderLine.render();
     return result;
   }
 
   String _renderTB(String text, Font font) {
-    var runes = text.runes;
-    var result = <String>[];
+    final runes = text.runes;
+    final result = <String>[];
 
     for (var rune in runes) {
-      var renderLine = _RenderLine(font);
+      final renderLine = _RenderLine(font);
       _processRune(renderLine, rune, font, font.horizontalLayouts);
       result.add(renderLine.render());
     }
@@ -88,7 +87,7 @@ class _RenderLine {
 
   // Underscore smushing: An underscore ("_") will be replaced by any of: "|", "/", "\", "[", "]", "{", "}", "(", ")", "<" or ">".
   // Hierarchy smushing: A hierarchy of six classes is used: "|", "/\", "[]", "{}", "()", and "<>".
-  static const List<int> _underscoreOrHierarchyReplacementsRunes = [
+  static const List<int?> _underscoreOrHierarchyReplacementsRunes = [
     _runeVerticalBar,
     _runeForwardSlash,
     _runeBackwardSlash,
@@ -108,7 +107,8 @@ class _RenderLine {
 
   _RenderLine(this._font);
 
-  int addCharacterToRight(Character character, List<HorizontalLayout> layouts) {
+  int addCharacterToRight(
+      Character character, List<HorizontalLayout>? layouts) {
     var isFullWidthLayout = layouts == null ||
         layouts.isEmpty ||
         (layouts.length == 1 && layouts[0] == HorizontalLayout.fullWidth);
@@ -141,7 +141,7 @@ class _RenderLine {
   }
 
   void _layoutLeftToRight(_RenderCharacter left, _RenderCharacter right,
-      List<HorizontalLayout> layouts) {
+      List<HorizontalLayout>? layouts) {
     var originalRightCharacter =
         right.character; // used to restore in case smushing needs to be aborted
     var hardblank = _font.hardblank;
@@ -171,7 +171,7 @@ class _RenderLine {
       var isLayoutRuleAppliedForLine = false;
       var leftRune = leftPos.rune;
       var rightRune = rightPos.rune;
-      for (var layout in layouts) {
+      for (var layout in layouts!) {
         switch (layout) {
           // Moves FIGcharacters closer together until they touch.
           // Typographers use the term "kerning" for this phenomenon when applied to the horizontal axis.
@@ -205,7 +205,7 @@ class _RenderLine {
               } else if ((rightIndex < leftIndex) &&
                   (leftIndex & 1 == 1 || rightIndex < leftIndex - 1)) {
                 isLayoutRuleAppliedForLine = true;
-                replace(right, row, rightPos, String.fromCharCode(leftRune));
+                replace(right, row, rightPos, String.fromCharCode(leftRune!));
               }
             }
             break;
@@ -300,7 +300,7 @@ class _RenderLine {
     } else {
       copyLine = copyLine.substring(0, pos) +
           replacement +
-          copyLine.substring(pos + 1);
+          copyLine.substring(pos! + 1);
     }
     copy.lines[row] = copyLine;
     //print('replaced ${renderCharacter.character.lines[row]} with $copyLine');
@@ -332,11 +332,10 @@ class _RenderLine {
   }
 
   String render() {
-    var runeHardblank = _font.hardblank;
-    var buffer = StringBuffer();
+    final runeHardblank = _font.hardblank;
+    final buffer = StringBuffer();
     for (var row = 0; row < _font.height; row++) {
-      //var lineOfRunes = List<int>(width);
-      var lineOfRunes = List<int>(_width);
+      final lineOfRunes = List.filled(_width, 32);
       var charIndex = 0;
       for (var char in _characters) {
         charIndex += char.relativeX;
@@ -348,8 +347,7 @@ class _RenderLine {
           if (rune == runeHardblank) {
             rune = _runeSpace;
           }
-          if (charIndex >= 0 &&
-              (rune != _runeSpace || lineOfRunes[charIndex] == null)) {
+          if (charIndex >= 0 && (rune != _runeSpace)) {
             lineOfRunes[charIndex] = rune;
           }
           charIndex++;
@@ -365,13 +363,13 @@ class _RenderLine {
 
 class _RenderCharacter {
   Character character;
-  int relativeX;
+  late int relativeX;
   _RenderCharacter(this.character);
 }
 
 class _RunePos {
-  final int rune;
-  final int pos;
+  final int? rune;
+  final int? pos;
   final int steps;
   _RunePos(this.rune, this.pos, this.steps);
 }

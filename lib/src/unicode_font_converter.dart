@@ -26,8 +26,8 @@ enum UnicodeFont {
 class UnicodeFontConverter {
   static String encode(final String text, final UnicodeFont font) {
     final buffer = StringBuffer();
-    final from = _fonts[UnicodeFont.normal];
-    final to = _fonts[font];
+    final from = _fonts[UnicodeFont.normal]!;
+    final to = _fonts[font]!;
     for (var i = 0; i < text.length; i++) {
       final c = text[i];
       final index = from.indexOf(c);

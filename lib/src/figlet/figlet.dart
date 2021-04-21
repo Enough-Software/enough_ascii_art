@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'package:enough_ascii_art/src/figlet/parser.dart';
 import 'package:enough_ascii_art/src/figlet/renderer.dart';
 
 import 'font.dart';

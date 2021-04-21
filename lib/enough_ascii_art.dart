@@ -31,7 +31,7 @@ const String _asciiGrayScaleCharacters = '#@%=+*:-. ';
 /// [fontHeightCompensationFactor] the optional factor between 0 and 1 that is used to adjust the height of the image. Most fonts have a greater height than width, so this factor allows to compensate this. Defaults to 0.6.
 String convertImage(Image image,
     {int maxWidth = 80,
-    int maxHeight,
+    int? maxHeight,
     String charset = _asciiGrayScaleCharacters,
     bool invert = false,
     double fontHeightCompensationFactor = 0.6}) {

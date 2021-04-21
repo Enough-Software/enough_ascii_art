@@ -45,14 +45,11 @@ class Parser {
     var baseLine = int.tryParse(baseDefinitionElements[2]);
     var maxCharacterLength = int.tryParse(baseDefinitionElements[3]);
     var oldLayoutInt = int.tryParse(baseDefinitionElements[4]);
-    var numberOfCommentLines = int.tryParse(baseDefinitionElements[5]);
+    var numberOfCommentLines = int.tryParse(baseDefinitionElements[5]) ?? 0;
     var textDirectionInt = 0;
-    int fullLayoutInt;
+    int? fullLayoutInt;
     if (baseDefinitionElements.length > 7) {
-      var tempDirectionInt = int.tryParse(baseDefinitionElements[6]);
-      if (tempDirectionInt != null) {
-        textDirectionInt = tempDirectionInt;
-      }
+      textDirectionInt = int.tryParse(baseDefinitionElements[6]) ?? 0;
       fullLayoutInt = int.tryParse(baseDefinitionElements[7]);
     }
     var font = Font()
@@ -60,7 +57,7 @@ class Parser {
       ..height = height
       ..baseLine = baseLine
       ..maxCharacterLength = maxCharacterLength
-      ..printDirection = (textDirectionInt == 0 || textDirectionInt == null)
+      ..printDirection = (textDirectionInt == 0)
           ? PrintDirection.leftToRight
           : PrintDirection.rightToLeft
       ..horizontalLayouts = _getHorizontalLayouts(oldLayoutInt, fullLayoutInt);
@@ -121,23 +118,24 @@ class Parser {
     var lineIndex = 1 + numberOfCommentLines;
     var runeCode = 32;
     var parsePhase = _ParsePhase.ascii;
-    var umlauts = [196, 214, 220, 228, 246, 252, 223];
+    final umlauts = [196, 214, 220, 228, 246, 252, 223];
     var germanUmlautIndex = 0;
     while (lineIndex < lines.length) {
       if (parsePhase == _ParsePhase.utf8) {
         // read code unit in first line of character definition:
         var codeUnitLine = lines[lineIndex];
         lineIndex++;
-        var spaceIndex = codeUnitLine.indexOf(' ');
+        final spaceIndex = codeUnitLine.indexOf(' ');
         if (spaceIndex != -1) {
           codeUnitLine = codeUnitLine.substring(0, spaceIndex);
         }
         if (codeUnitLine.isEmpty) continue;
-        runeCode = int.tryParse(codeUnitLine);
-        if (runeCode == null) {
+        final intValue = int.tryParse(codeUnitLine);
+        if (intValue == null) {
           throw FormatException(
               'Invalid font definition at line [$lineIndex]: [$codeUnitLine] contains invalid code unit at beginning.');
         }
+        runeCode = intValue;
       }
       var firstCharacterLine = lines[lineIndex];
       var characterWidth = firstCharacterLine.length - 1;
@@ -174,9 +172,10 @@ class Parser {
     return font;
   }
 
-  List<HorizontalLayout> _getHorizontalLayouts(int oldLayout, int fullLayout) {
+  List<HorizontalLayout> _getHorizontalLayouts(
+      int? oldLayout, int? fullLayout) {
     var layouts = <HorizontalLayout>[];
-    var compatibleLayout = fullLayout ?? oldLayout;
+    var compatibleLayout = fullLayout ?? oldLayout!;
     if (compatibleLayout & horizontalEqualCharacterSmushing ==
         horizontalEqualCharacterSmushing) {
       layouts.add(HorizontalLayout.equalCharacterSmushing);

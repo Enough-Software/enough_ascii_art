@@ -8,13 +8,13 @@ class ImageConverter {
   ///
   /// [image] the image to be converted
   /// [maxWidth] the optional maximum width of the image in characters, defaults to 80
-  /// [maxHeight] the optional maximum height of th eimage in characters, defaults to null, so the image is caled linearily
+  /// [maxHeight] the optional maximum height of the image in characters, defaults to null, so the image is scaled linearily
   /// [charSet] the optional charset from darkest to lightest character, defaults to '#@%=+*:-. '
   /// [invert] allows to invert pixels, so that a dark pixel gets a bright characater and vise versa. This is useful when printing bight text on a dark background (console). Defaults to false.
   /// [fontHeightCompensationFactor] the optional factor between 0 and 1 that is used to adjust the height of the image. Most fonts have a greater height than width, so this factor allows to compensate this. Defaults to 0.6.
   static String convertImage(Image image,
       {int maxWidth = 80,
-      int maxHeight,
+      int? maxHeight,
       String charset = _asciiGrayScaleCharacters,
       bool invert = false,
       double fontHeightCompensationFactor = 0.6}) {
