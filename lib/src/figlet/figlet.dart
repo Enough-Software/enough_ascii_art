@@ -1,7 +1,5 @@
 import 'dart:io';
-import 'dart:isolate';
 import 'package:enough_ascii_art/src/package_file_loader.dart';
-import 'package:resource/resource.dart' show Resource;
 import 'package:enough_ascii_art/src/figlet/parser.dart';
 import 'package:enough_ascii_art/src/figlet/renderer.dart';
 

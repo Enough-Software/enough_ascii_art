@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:enough_ascii_art/enough_ascii_art.dart';
+import 'package:enough_ascii_art/src/util/http_helper.dart';
 
 /// The direction for rendering a font
 enum PrintDirection { leftToRight, rightToLeft }
@@ -95,6 +99,23 @@ class Font {
     var character = _charactersByRuneCode[rune];
     character ??= _zeroCharacter;
     return character;
+  }
+
+  static Future<Font> network(String src) async {
+    final response = await HttpHelper.httpGet(src);
+    if (response.statusCode == 200) {
+      return text(response.text);
+    }
+    throw StateError(
+        'Unable to resolve url "$src": got response code ${response.statusCode}');
+  }
+
+  static Font text(String text) {
+    return Parser().parseFontDefinitionByText(text);
+  }
+
+  static Font memory(Uint8List bytes, {Encoding codec = utf8}) {
+    return text(codec.decode(bytes));
   }
 }
 
