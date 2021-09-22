@@ -1,3 +1,6 @@
+import 'package:characters/characters.dart';
+
+/// The available unicode fonts
 enum UnicodeFont {
   normal,
   serifBold,
@@ -20,23 +23,142 @@ enum UnicodeFont {
   underlinedSingle,
   underlinedDouble,
   strikethroughSingle,
-  crosshatch
+  //crosshatch,
 }
 
+extension ExtensionsUnicodeFont on UnicodeFont {
+  /// Is this a bold font?
+  bool get isBold {
+    switch (this) {
+      case UnicodeFont.serifBold:
+      case UnicodeFont.serifBoldItalic:
+      case UnicodeFont.sansBold:
+      case UnicodeFont.sansBoldItalic:
+      case UnicodeFont.scriptBold:
+      case UnicodeFont.frakturBold:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  /// Is this an italic font?
+  bool get isItalic {
+    switch (this) {
+      case UnicodeFont.serifItalic:
+      case UnicodeFont.serifBoldItalic:
+      case UnicodeFont.sansItalic:
+      case UnicodeFont.sansBoldItalic:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  bool get isUnderlined {
+    switch (this) {
+      case UnicodeFont.underlinedSingle:
+      case UnicodeFont.underlinedDouble:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  bool get isStrikeThrough {
+    switch (this) {
+      case UnicodeFont.strikethroughSingle:
+        //case UnicodeFont.crosshatch:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  /// If possible retrieves the bold variant of this font, otherwise [UnicodeFont.sansBold].
+  UnicodeFont toBoldVariant() {
+    switch (this) {
+      case UnicodeFont.serifItalic:
+      case UnicodeFont.serifBoldItalic:
+        return UnicodeFont.serifBoldItalic;
+      case UnicodeFont.sansItalic:
+      case UnicodeFont.sansBoldItalic:
+        return UnicodeFont.sansBoldItalic;
+      case UnicodeFont.script:
+      case UnicodeFont.scriptBold:
+        return UnicodeFont.scriptBold;
+      case UnicodeFont.fraktur:
+      case UnicodeFont.frakturBold:
+        return UnicodeFont.frakturBold;
+      default:
+        return UnicodeFont.sansBold;
+    }
+  }
+
+  /// If possible retrieves the italic variant of this font, otherwise [UnicodeFont.sansItalic].
+  UnicodeFont toItalicVariant() {
+    switch (this) {
+      case UnicodeFont.serifItalic:
+        return UnicodeFont.serifItalic;
+      case UnicodeFont.serifBoldItalic:
+        return UnicodeFont.serifBoldItalic;
+      case UnicodeFont.sansItalic:
+        return UnicodeFont.sansItalic;
+      case UnicodeFont.sansBoldItalic:
+        return UnicodeFont.sansBoldItalic;
+      default:
+        return (isBold) ? UnicodeFont.sansBoldItalic : UnicodeFont.sansItalic;
+    }
+  }
+}
+
+/// Unicode converter helper
 class UnicodeFontConverter {
-  static String encode(final String text, final UnicodeFont font) {
+  UnicodeFontConverter._();
+
+  /// Converts the given [text] to the specified [font].
+  static String encode(final String text, final UnicodeFont font) =>
+      _convert(text, UnicodeFont.normal, font);
+
+  /// Tries to determine the font of the  given [text] and converts it to normal text.
+  ///
+  /// Note that it is expected that the given text is encoded in one single [UnicodeFont].
+  static String clear(final String text) {
+    final font = getFont(text);
+    if (font == UnicodeFont.normal) {
+      return text;
+    }
+    return _convert(text, font, UnicodeFont.normal);
+  }
+
+  /// Tries to determine the font from the first character of the given [text].
+  static UnicodeFont getFont(final String text) {
+    if (text.isEmpty) {
+      return UnicodeFont.normal;
+    }
+    final first = Characters(text).first;
+    for (final font in _fonts.entries) {
+      if (font.value.contains(first)) {
+        return font.key;
+      }
+    }
+    return UnicodeFont.normal;
+  }
+
+  static String _convert(
+      final String text, final UnicodeFont fromFont, final UnicodeFont toFont) {
+    final from = _fonts[fromFont]!;
+    final to = _fonts[toFont]!;
     final buffer = StringBuffer();
-    final from = _fonts[UnicodeFont.normal]!;
-    final to = _fonts[font]!;
-    for (var i = 0; i < text.length; i++) {
-      final c = text[i];
-      final index = from.indexOf(c);
+    final characters = Characters(text);
+    characters.forEach((element) {
+      final index = from.indexOf(element);
       if (index == -1) {
-        buffer.write(c);
+        buffer.write(element);
       } else {
         buffer.write(to[index]);
       }
-    }
+    });
     return buffer.toString();
   }
 
@@ -1302,284 +1424,284 @@ class UnicodeFontConverter {
       "'"
     ],
     UnicodeFont.underlinedSingle: [
-      'a',
-      'b',
-      'c',
-      'd',
-      'e',
-      'f',
-      'g',
-      'h',
-      'i',
-      'j',
-      'k',
-      'l',
-      'm',
-      'n',
-      'o',
-      'p',
-      'q',
-      'r',
-      's',
-      't',
-      'u',
-      'v',
-      'w',
-      'x',
-      'y',
-      'z',
-      'A',
-      'B',
-      'C',
-      'D',
-      'E',
-      'F',
-      'G',
-      'H',
-      'I',
-      'J',
-      'K',
-      'L',
-      'M',
-      'N',
-      'O',
-      'P',
-      'Q',
-      'R',
-      'S',
-      'T',
-      'U',
-      'V',
-      'W',
-      'X',
-      'Y',
-      'Z',
-      '0',
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '!',
-      '?',
-      '.',
-      ',',
-      '"',
-      "'"
+      'a̲',
+      'b̲',
+      'c̲',
+      'd̲',
+      'e̲',
+      'f̲',
+      'g̲',
+      'h̲',
+      'i̲',
+      'j̲',
+      'k̲',
+      'l̲',
+      'm̲',
+      'n̲',
+      'o̲',
+      'p̲',
+      'q̲',
+      'r̲',
+      's̲',
+      't̲',
+      'u̲',
+      'v̲',
+      'w̲',
+      'x̲',
+      'y̲',
+      'z̲',
+      'A̲',
+      'B̲',
+      'C̲',
+      'D̲',
+      'E̲',
+      'F̲',
+      'G̲',
+      'H̲',
+      'I̲',
+      'J̲',
+      'K̲',
+      'L̲',
+      'M̲',
+      'N̲',
+      'O̲',
+      'P̲',
+      'Q̲',
+      'R̲',
+      'S̲',
+      'T̲',
+      'U̲',
+      'V̲',
+      'W̲',
+      'X̲',
+      'Y̲',
+      'Z̲',
+      '0̲',
+      '1̲',
+      '2̲',
+      '3̲',
+      '4̲',
+      '5̲',
+      '6̲',
+      '7̲',
+      '8̲',
+      '9̲',
+      '!̲',
+      '?̲',
+      '.̲',
+      ',̲',
+      '"̲',
+      "'̲"
     ],
     UnicodeFont.underlinedDouble: [
-      'a',
-      'b',
-      'c',
-      'd',
-      'e',
-      'f',
-      'g',
-      'h',
-      'i',
-      'j',
-      'k',
-      'l',
-      'm',
-      'n',
-      'o',
-      'p',
-      'q',
-      'r',
-      's',
-      't',
-      'u',
-      'v',
-      'w',
-      'x',
-      'y',
-      'z',
-      'A',
-      'B',
-      'C',
-      'D',
-      'E',
-      'F',
-      'G',
-      'H',
-      'I',
-      'J',
-      'K',
-      'L',
-      'M',
-      'N',
-      'O',
-      'P',
-      'Q',
-      'R',
-      'S',
-      'T',
-      'U',
-      'V',
-      'W',
-      'X',
-      'Y',
-      'Z',
-      '0',
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '!',
-      '?',
+      'a͇',
+      'b͇',
+      'c͇',
+      'd͇',
+      'e͇',
+      'f͇',
+      'g͇',
+      'h͇',
+      'i͇',
+      'j͇',
+      'k͇',
+      'l͇',
+      'm͇',
+      'n͇',
+      'o͇',
+      'p͇',
+      'q͇',
+      'r͇',
+      's͇',
+      't͇',
+      'u͇',
+      'v͇',
+      'w͇',
+      'x͇',
+      'y͇',
+      'z͇',
+      'A͇',
+      'B͇',
+      'C͇',
+      'D͇',
+      'E͇',
+      'F͇',
+      'G͇',
+      'H͇',
+      'I͇',
+      'J͇',
+      'K͇',
+      'L͇',
+      'M͇',
+      'N͇',
+      'O͇',
+      'P͇',
+      'Q͇',
+      'R͇',
+      'S͇',
+      'T͇',
+      'U͇',
+      'V͇',
+      'W͇',
+      'X͇',
+      'Y͇',
+      'Z͇',
+      '0͇',
+      '1͇',
+      '2͇',
+      '3͇',
+      '4͇',
+      '5͇',
+      '6͇',
+      '7͇',
+      '8͇',
+      '9͇',
+      '!͇',
+      '?͇',
       '.',
       ',',
       '"',
       "'"
     ],
     UnicodeFont.strikethroughSingle: [
-      'a',
-      'b',
-      'c',
-      'd',
-      'e',
-      'f',
-      'g',
-      'h',
-      'i',
-      'j',
-      'k',
-      'l',
-      'm',
-      'n',
-      'o',
-      'p',
-      'q',
-      'r',
-      's',
-      't',
-      'u',
-      'v',
-      'w',
-      'x',
-      'y',
-      'z',
-      'A',
-      'B',
-      'C',
-      'D',
-      'E',
-      'F',
-      'G',
-      'H',
-      'I',
-      'J',
-      'K',
-      'L',
-      'M',
-      'N',
-      'O',
-      'P',
-      'Q',
-      'R',
-      'S',
-      'T',
-      'U',
-      'V',
-      'W',
-      'X',
-      'Y',
-      'Z',
-      '0',
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '!',
-      '?',
-      '.',
-      ',',
-      '"',
-      "'"
+      'a̶',
+      'b̶',
+      'c̶',
+      'd̶',
+      'e̶',
+      'f̶',
+      'g̶',
+      'h̶',
+      'i̶',
+      'j̶',
+      'k̶',
+      'l̶',
+      'm̶',
+      'n̶',
+      'o̶',
+      'p̶',
+      'q̶',
+      'r̶',
+      's̶',
+      't̶',
+      'u̶',
+      'v̶',
+      'w̶',
+      'x̶',
+      'y̶',
+      'z̶',
+      'A̶',
+      'B̶',
+      'C̶',
+      'D̶',
+      'E̶',
+      'F̶',
+      'G̶',
+      'H̶',
+      'I̶',
+      'J̶',
+      'K̶',
+      'L̶',
+      'M̶',
+      'N̶',
+      'O̶',
+      'P̶',
+      'Q̶',
+      'R̶',
+      'S̶',
+      'T̶',
+      'U̶',
+      'V̶',
+      'W̶',
+      'X̶',
+      'Y̶',
+      'Z̶',
+      '0̶',
+      '1̶',
+      '2̶',
+      '3̶',
+      '4̶',
+      '5̶',
+      '6̶',
+      '7̶',
+      '8̶',
+      '9̶',
+      '!̶',
+      '?̶',
+      '.̶',
+      ',̶',
+      '"̶',
+      "'̶"
     ],
-    UnicodeFont.crosshatch: [
-      'a',
-      'b',
-      'c',
-      'd',
-      'e',
-      'f',
-      'g',
-      'h',
-      'i',
-      'j',
-      'k',
-      'l',
-      'm',
-      'n',
-      'o',
-      'p',
-      'q',
-      'r',
-      's',
-      't',
-      'u',
-      'v',
-      'w',
-      'x',
-      'y',
-      'z',
-      'A',
-      'B',
-      'C',
-      'D',
-      'E',
-      'F',
-      'G',
-      'H',
-      'I',
-      'J',
-      'K',
-      'L',
-      'M',
-      'N',
-      'O',
-      'P',
-      'Q',
-      'R',
-      'S',
-      'T',
-      'U',
-      'V',
-      'W',
-      'X',
-      'Y',
-      'Z',
-      '0',
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '!',
-      '?',
-      '.',
-      ',',
-      '"',
-      "'"
-    ],
+    // UnicodeFont.crosshatch: [
+    //   'a',
+    //   'b',
+    //   'c',
+    //   'd',
+    //   'e',
+    //   'f',
+    //   'g',
+    //   'h',
+    //   'i',
+    //   'j',
+    //   'k',
+    //   'l',
+    //   'm',
+    //   'n',
+    //   'o',
+    //   'p',
+    //   'q',
+    //   'r',
+    //   's',
+    //   't',
+    //   'u',
+    //   'v',
+    //   'w',
+    //   'x',
+    //   'y',
+    //   'z',
+    //   'A',
+    //   'B',
+    //   'C',
+    //   'D',
+    //   'E',
+    //   'F',
+    //   'G',
+    //   'H',
+    //   'I',
+    //   'J',
+    //   'K',
+    //   'L',
+    //   'M',
+    //   'N',
+    //   'O',
+    //   'P',
+    //   'Q',
+    //   'R',
+    //   'S',
+    //   'T',
+    //   'U',
+    //   'V',
+    //   'W',
+    //   'X',
+    //   'Y',
+    //   'Z',
+    //   '0',
+    //   '1',
+    //   '2',
+    //   '3',
+    //   '4',
+    //   '5',
+    //   '6',
+    //   '7',
+    //   '8',
+    //   '9',
+    //   '!',
+    //   '?',
+    //   '.',
+    //   ',',
+    //   '"',
+    //   "'"
+    // ],
   };
 }
