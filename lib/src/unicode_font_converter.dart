@@ -27,6 +27,59 @@ enum UnicodeFont {
 }
 
 extension ExtensionsUnicodeFont on UnicodeFont {
+  /// Retrieves the English name of this font
+  String get name {
+    switch (this) {
+      case UnicodeFont.normal:
+        return 'Sans';
+      case UnicodeFont.serifBold:
+        return 'Serif bold';
+      case UnicodeFont.serifItalic:
+        return 'Serif italic';
+      case UnicodeFont.serifBoldItalic:
+        return 'Serif bold italic';
+      case UnicodeFont.sans:
+        return 'Sans';
+      case UnicodeFont.sansBold:
+        return 'Sans bold';
+      case UnicodeFont.sansItalic:
+        return 'Sans italic';
+      case UnicodeFont.sansBoldItalic:
+        return 'Sans bold italic';
+      case UnicodeFont.script:
+        return 'Script';
+      case UnicodeFont.scriptBold:
+        return 'Script bold';
+      case UnicodeFont.fraktur:
+        return 'Fraktur';
+      case UnicodeFont.frakturBold:
+        return 'Fraktur bold';
+      case UnicodeFont.monospace:
+        return 'Monospace';
+      case UnicodeFont.fullwidth:
+        return 'Full-Width';
+      case UnicodeFont.doublestruck:
+        return 'Doublestruck (Outline)';
+      case UnicodeFont.capitalized:
+        return 'Capitalized';
+      case UnicodeFont.circled:
+        return 'Circled';
+      case UnicodeFont.parenthesized:
+        return 'Parenthesized';
+      case UnicodeFont.underlinedSingle:
+        return 'Underlined';
+      case UnicodeFont.underlinedDouble:
+        return 'Underlined double';
+      case UnicodeFont.strikethroughSingle:
+        return 'Strike through';
+    }
+  }
+
+  /// Retrieves the name of this font encoded in its own unicode
+  String get encodedName {
+    return UnicodeFontConverter.encode(name, this);
+  }
+
   /// Is this a bold font?
   bool get isBold {
     switch (this) {
@@ -55,6 +108,7 @@ extension ExtensionsUnicodeFont on UnicodeFont {
     }
   }
 
+  /// Is this font underlined?
   bool get isUnderlined {
     switch (this) {
       case UnicodeFont.underlinedSingle:
@@ -65,6 +119,7 @@ extension ExtensionsUnicodeFont on UnicodeFont {
     }
   }
 
+  /// Is this font strike through?
   bool get isStrikeThrough {
     switch (this) {
       case UnicodeFont.strikethroughSingle:
@@ -118,34 +173,46 @@ class UnicodeFontConverter {
 
   /// Converts the given [text] to the specified [font].
   static String encode(final String text, final UnicodeFont font) =>
-      _convert(text, UnicodeFont.normal, font);
+      convert(text, UnicodeFont.normal, font);
 
   /// Tries to determine the font of the  given [text] and converts it to normal text.
   ///
   /// Note that it is expected that the given text is encoded in one single [UnicodeFont].
   static String clear(final String text) {
-    final font = getFont(text);
+    final font = getFontFromTextStart(text);
     if (font == UnicodeFont.normal) {
       return text;
     }
-    return _convert(text, font, UnicodeFont.normal);
+    return convert(text, font, UnicodeFont.normal);
   }
 
   /// Tries to determine the font from the first character of the given [text].
-  static UnicodeFont getFont(final String text) {
+  static UnicodeFont getFontFromTextStart(final String text) =>
+      getFont(text, fromStart: true);
+
+  /// Tries to determine the font from the last character of the given [text].
+  static UnicodeFont getFontFromTextEnd(final String text) =>
+      getFont(text, fromStart: false);
+
+  /// Tries to determine the font from the first or last character of the given [text].
+  ///
+  /// Set [fromStart] to `true` to check the font from the start.
+  static UnicodeFont getFont(final String text, {bool fromStart = false}) {
     if (text.isEmpty) {
       return UnicodeFont.normal;
     }
-    final first = Characters(text).first;
+    final characters = Characters(text.trim());
+    final character = fromStart ? characters.first : characters.last;
     for (final font in _fonts.entries) {
-      if (font.value.contains(first)) {
+      if (font.value.contains(character)) {
         return font.key;
       }
     }
     return UnicodeFont.normal;
   }
 
-  static String _convert(
+  /// Converts the given [text] from the given [fromFont] to the [toFont].
+  static String convert(
       final String text, final UnicodeFont fromFont, final UnicodeFont toFont) {
     final from = _fonts[fromFont]!;
     final to = _fonts[toFont]!;

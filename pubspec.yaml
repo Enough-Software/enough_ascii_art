@@ -8,7 +8,7 @@ environment:
 
 dependencies:
   image: ^3.0.5
-  characters: ^1.2.0
+  characters: ^1.1.0
   
 dev_dependencies:
   pedantic: ^1.8.0
