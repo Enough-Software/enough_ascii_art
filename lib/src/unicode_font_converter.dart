@@ -197,11 +197,12 @@ class UnicodeFontConverter {
   /// Tries to determine the font from the first or last character of the given [text].
   ///
   /// Set [fromStart] to `true` to check the font from the start.
-  static UnicodeFont getFont(final String text, {bool fromStart = false}) {
+  static UnicodeFont getFont(String text, {bool fromStart = false}) {
+    text = text.trim();
     if (text.isEmpty) {
       return UnicodeFont.normal;
     }
-    final characters = Characters(text.trim());
+    final characters = Characters(text);
     final character = fromStart ? characters.first : characters.last;
     for (final font in _fonts.entries) {
       if (font.value.contains(character)) {
