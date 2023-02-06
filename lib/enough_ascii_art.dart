@@ -3,13 +3,12 @@
 /// Brought to you by 𝔼𝕟𝕠𝕦𝕘𝕙 𝕊𝕠𝕗𝕥𝕨𝕒𝕣𝕖
 library enough_ascii_art;
 
-import 'package:enough_ascii_art/src/figlet/figlet.dart';
-import 'package:enough_ascii_art/src/figlet/font.dart';
-import 'package:enough_ascii_art/src/unicode_font_converter.dart';
 import 'package:image/image.dart';
 import 'src/figlet/figlet.dart';
+import 'src/figlet/font.dart';
 import 'src/image_converter.dart';
 import 'src/emoticon_converter.dart';
+import 'src/unicode_font_converter.dart';
 
 export 'src/image_converter.dart';
 export 'src/emoticon_converter.dart';
@@ -25,22 +24,26 @@ const String _asciiGrayScaleCharacters = '#@%=+*:-. ';
 ///
 /// [image] the image to be converted
 /// [maxWidth] the optional maximum width of the image in characters, defaults to 80
-/// [maxHeight] the optional maximum height of th eimage in characters, defaults to null, so the image is caled linearily
-/// [charSet] the optional charset from darkest to lightest character, defaults to '#@%=+*:-. '
-/// [invert] allows to invert pixels, so that a dark pixel gets a bright characater and vise versa. This is useful when printing bight text on a dark background (console). Defaults to false.
+/// [maxHeight] the optional maximum height of th image in characters, defaults to null, so the image is called linearly
+/// [charset] the optional charset from darkest to lightest character, defaults to '#@%=+*:-. '
+/// [invert] allows to invert pixels, so that a dark pixel gets a bright character and vise versa. This is useful when printing bight text on a dark background (console). Defaults to false.
 /// [fontHeightCompensationFactor] the optional factor between 0 and 1 that is used to adjust the height of the image. Most fonts have a greater height than width, so this factor allows to compensate this. Defaults to 0.6.
-String convertImage(Image image,
-    {int maxWidth = 80,
-    int? maxHeight,
-    String charset = _asciiGrayScaleCharacters,
-    bool invert = false,
-    double fontHeightCompensationFactor = 0.6}) {
-  return ImageConverter.convertImage(image,
-      maxWidth: maxWidth,
-      maxHeight: maxHeight,
-      charset: charset,
-      invert: invert,
-      fontHeightCompensationFactor: fontHeightCompensationFactor);
+String convertImage(
+  Image image, {
+  int maxWidth = 80,
+  int? maxHeight,
+  String charset = _asciiGrayScaleCharacters,
+  bool invert = false,
+  double fontHeightCompensationFactor = 0.6,
+}) {
+  return ImageConverter.convertImage(
+    image,
+    maxWidth: maxWidth,
+    maxHeight: maxHeight,
+    charset: charset,
+    invert: invert,
+    fontHeightCompensationFactor: fontHeightCompensationFactor,
+  );
 }
 
 /// Replaces all common smileys with their ASCII representation
@@ -52,15 +55,21 @@ String convertEmoticons(String text,
   return EmoticonConverter.convertEmoticons(text, style);
 }
 
-/// Rendes the given [text] in the specified [font].
+/// Renders the given [text] in the specified [font].
 ///
-/// Optionally specify the [direction], which defaults to [FigletRenderDirection.LeftToRight]
-String renderFiglet(String text, Font font,
-    {FigletRenderDirection direction = FigletRenderDirection.LeftToRight}) {
+/// Optionally specify the [direction], which defaults to [FigletRenderDirection.leftToRight]
+String renderFiglet(
+  String text,
+  Font font, {
+  FigletRenderDirection direction = FigletRenderDirection.leftToRight,
+}) {
   return FIGlet.renderFIGure(text, font, direction: direction);
 }
 
 /// Renders the given [text] in the specified [font].
-String renderUnicode(String text, UnicodeFont font) {
+String renderUnicode(
+  String text,
+  UnicodeFont font,
+) {
   return UnicodeFontConverter.encode(text, font);
 }

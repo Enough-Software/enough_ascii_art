@@ -1,5 +1,4 @@
 import 'package:enough_ascii_art/enough_ascii_art.dart';
-import 'package:enough_ascii_art/src/unicode_font_converter.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -21,13 +20,15 @@ void main() {
   group('Unicode font tests', () {
     test('Convert to double struck', () {
       expect(
-          UnicodeFontConverter.encode('hello world', UnicodeFont.doublestruck),
-          '𝕙𝕖𝕝𝕝𝕠 𝕨𝕠𝕣𝕝𝕕');
+        UnicodeFontConverter.encode('hello world', UnicodeFont.doublestruck),
+        '𝕙𝕖𝕝𝕝𝕠 𝕨𝕠𝕣𝕝𝕕',
+      );
     });
     test('Convert to fraktur', () {
       expect(
-          UnicodeFontConverter.encode('hello world', UnicodeFont.frakturBold),
-          '𝖍𝖊𝖑𝖑𝖔 𝖜𝖔𝖗𝖑𝖉');
+        UnicodeFontConverter.encode('hello world', UnicodeFont.frakturBold),
+        '𝖍𝖊𝖑𝖑𝖔 𝖜𝖔𝖗𝖑𝖉',
+      );
     });
   });
 }

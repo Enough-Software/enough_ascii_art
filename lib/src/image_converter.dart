@@ -4,13 +4,13 @@ import 'package:image/image.dart';
 class ImageConverter {
   static const String _asciiGrayScaleCharacters = '#@%=+*:-. ';
 
-  /// Converts the image to ASCII text.
+  /// Converts the [image] to ASCII text.
   ///
   /// [image] the image to be converted
-  /// [maxWidth] the optional maximum width of the image in characters, defaults to 80
-  /// [maxHeight] the optional maximum height of the image in characters, defaults to null, so the image is scaled linearily
-  /// [charSet] the optional charset from darkest to lightest character, defaults to '#@%=+*:-. '
-  /// [invert] allows to invert pixels, so that a dark pixel gets a bright characater and vise versa. This is useful when printing bight text on a dark background (console). Defaults to false.
+  /// [maxWidth] the optional maximum width of the image in characters, defaults to `80`
+  /// [maxHeight] the optional maximum height of the image in characters, defaults to null, so the image is scaled linearly
+  /// [charset] the optional charset from darkest to lightest character, defaults to '#@%=+*:-. '
+  /// [invert] allows to invert pixels, so that a dark pixel gets a bright character and vise versa. This is useful when printing bight text on a dark background (console). Defaults to false.
   /// [fontHeightCompensationFactor] the optional factor between 0 and 1 that is used to adjust the height of the image. Most fonts have a greater height than width, so this factor allows to compensate this. Defaults to 0.6.
   static String convertImage(Image image,
       {int maxWidth = 80,
@@ -35,8 +35,7 @@ class ImageConverter {
     for (var y = 0; y < scaledImage.height; y++) {
       for (var x = 0; x < scaledImage.width; x++) {
         var pixel = scaledImage.getPixel(x, y);
-        var grayscale =
-            (pixel >> 16 & 0xff) | (pixel >> 8 & 0xff) | (pixel & 0xff);
+        var grayscale = (pixel.r as int) | (pixel.g as int) | (pixel.b as int);
         var index = (grayscale * (charset.length - 1) / 255).floor();
         if (invert) {
           index = (charset.length - 1) - index;

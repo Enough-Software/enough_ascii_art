@@ -219,14 +219,14 @@ class UnicodeFontConverter {
     final to = _fonts[toFont]!;
     final buffer = StringBuffer();
     final characters = Characters(text);
-    characters.forEach((element) {
+    for (final element in characters) {
       final index = from.indexOf(element);
       if (index == -1) {
         buffer.write(element);
       } else {
         buffer.write(to[index]);
       }
-    });
+    }
     return buffer.toString();
   }
 

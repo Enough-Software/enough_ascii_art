@@ -1,3 +1,6 @@
+## 1.1.0
+- update dependencies and improve documentation
+
 ## 1.0.0
 - `enough_ascii_art` is now [null safe](https://dart.dev/null-safety/tour) #127
 - removed integration of fonts, as this is not supported by Dart

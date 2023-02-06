@@ -10,8 +10,8 @@ class Renderer {
   /// [text] the text to render
   /// [font] the FIGlet font to be used for rendering
   /// [maxLineWidth] the optional maximum width for a single line, currently ignored
-  /// [horizontalLayouts] the optional rules for horizontal layouting
-  /// [verticalLayouts] the options rules for vertical layouting, currently ignored
+  /// [horizontalLayouts] the optional rules for horizontal layout
+  /// [verticalLayouts] the options rules for vertical layout, currently ignored
   String render(
     String text,
     Font font,
@@ -21,7 +21,7 @@ class Renderer {
     List<VerticalLayout>? verticalLayouts,
   }) {
     horizontalLayouts ??= font.horizontalLayouts;
-    if (direction == FigletRenderDirection.LeftToRight) {
+    if (direction == FigletRenderDirection.leftToRight) {
       return _renderLR(text, font, horizontalLayouts!);
     } else {
       return _renderTB(text, font);
@@ -78,8 +78,8 @@ class _RenderLine {
   static const int _runeRightBracket = 93; // ]
   static const int _runeLeftBrace = 123; // {
   static const int _runeRightBrace = 125; // }
-  static const int _runeLeftParenthese = 40; // (
-  static const int _runeRightParenthese = 41; // )
+  static const int _runeLeftParenthesis = 40; // (
+  static const int _runeRightParenthesis = 41; // )
   static const int _runeForwardSlash = 47; // /
   static const int _runeBackwardSlash = 92; // \
   static const int _runeSmallerThan = 60; // <
@@ -95,8 +95,8 @@ class _RenderLine {
     _runeRightBracket,
     _runeLeftBrace,
     _runeRightBrace,
-    _runeLeftParenthese,
-    _runeRightParenthese,
+    _runeLeftParenthesis,
+    _runeRightParenthesis,
     _runeSmallerThan,
     _runeLargerThan
   ];
@@ -221,10 +221,10 @@ class _RenderLine {
                       rightRune == _runeRightBrace) || // {}
                   (leftRune == _runeRightBrace &&
                       rightRune == _runeLeftBrace) || // }{
-                  (leftRune == _runeLeftParenthese &&
-                      rightRune == _runeRightParenthese) || // ()
-                  (leftRune == _runeRightParenthese &&
-                      rightRune == _runeLeftParenthese)) // )(
+                  (leftRune == _runeLeftParenthesis &&
+                      rightRune == _runeRightParenthesis) || // ()
+                  (leftRune == _runeRightParenthesis &&
+                      rightRune == _runeLeftParenthesis)) // )(
               {
                 // replace right character:
                 isLayoutRuleAppliedForLine = true;
@@ -259,7 +259,7 @@ class _RenderLine {
 
           // Universal smushing simply overrides the sub-character from the earlier FIGcharacter with the sub-character
           // from the later FIGcharacter.
-          // This produces an "overlapping" effect with some FIGfonts, wherin the latter FIGcharacter may appear to be "in front".
+          // This produces an "overlapping" effect with some FIGfonts, wherein the latter FIGcharacter may appear to be "in front".
           case HorizontalLayout.universalSmushing:
             isLayoutRuleAppliedForLine = true;
             break;
