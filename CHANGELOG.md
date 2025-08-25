@@ -1,3 +1,6 @@
+## 1.1.2
+- downgrade characters dependency
+
 ## 1.1.1
 - update dependencies
 

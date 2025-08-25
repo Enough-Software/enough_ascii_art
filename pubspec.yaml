@@ -1,14 +1,14 @@
 name: enough_ascii_art
 description: Generates ASCII art using image to ASCII, FIGlet text banner
   support and emoticon to text conversions.
-version: 1.1.1
+version: 1.1.2
 homepage: https://github.com/Enough-Software/enough_ascii_art
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
-  characters: ^1.4.1
+  characters: ^1.4.0
   image: ^4.5.4
 
 dev_dependencies:
