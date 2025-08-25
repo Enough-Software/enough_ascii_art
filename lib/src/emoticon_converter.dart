@@ -68,7 +68,6 @@ class EmoticonConverter {
     }
     switch (style) {
       case EmoticonStyle.western:
-      default:
         return _convert(text, _westernStyleEmoticons);
     }
   }

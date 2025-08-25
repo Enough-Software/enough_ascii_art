@@ -1,3 +1,6 @@
+## 1.1.1
+- update dependencies
+
 ## 1.1.0
 - update dependencies and improve documentation
 
