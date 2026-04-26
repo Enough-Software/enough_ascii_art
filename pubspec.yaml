@@ -5,7 +5,7 @@ version: 1.1.2
 homepage: https://github.com/Enough-Software/enough_ascii_art
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.11.5 <4.0.0'
 
 dependencies:
   characters: ^1.4.0

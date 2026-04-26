@@ -1,22 +1,23 @@
 /// Have fun with ASCII text-based art.
 ///
 /// Brought to you by 𝔼𝕟𝕠𝕦𝕘𝕙 𝕊𝕠𝕗𝕥𝕨𝕒𝕣𝕖
-library enough_ascii_art;
+library;
 
 import 'package:image/image.dart';
+
+import 'src/emoticon_converter.dart';
 import 'src/figlet/figlet.dart';
 import 'src/figlet/font.dart';
 import 'src/image_converter.dart';
-import 'src/emoticon_converter.dart';
 import 'src/unicode_font_converter.dart';
 
-export 'src/image_converter.dart';
 export 'src/emoticon_converter.dart';
-export 'src/unicode_font_converter.dart';
 export 'src/figlet/figlet.dart';
 export 'src/figlet/font.dart';
 export 'src/figlet/parser.dart';
 export 'src/figlet/renderer.dart';
+export 'src/image_converter.dart';
+export 'src/unicode_font_converter.dart';
 
 const String _asciiGrayScaleCharacters = '#@%=+*:-. ';
 
